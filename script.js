@@ -206,7 +206,7 @@ class SearchManager {
 class GamificationManager {
     constructor() {
         this.xpCounter = document.querySelector('.xp-counter');
-        this.currentXP = 2546;
+        this.currentXP = 1500;  
         this.init();
     }
 
@@ -323,7 +323,7 @@ class GamificationManager {
             if (scoreElement) {
                 const currentScore = parseInt(scoreElement.textContent);
                 const newScore = currentScore + Math.floor(Math.random() * 10);
-                scoreElement.textContent = newScore;
+                scoreElement.textContent = newScore + " XP";
 
                 // Add update animation
                 scoreElement.style.color = 'var(--accent-quaternary)';
