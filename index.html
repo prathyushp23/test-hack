@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jhop Directory - Corporate Flight Booking</title>
+    <title>Corporate Flight Booking</title>
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
@@ -18,8 +18,8 @@
             <div class="profile-section">
                 <div class="profile-icon">👤</div>
                 <div class="profile-info">
-                    <h1>Jhop Directory</h1>
-                    <span class="xp-counter">2546 XP</span>
+                    <h1>Peter Parker</h1>
+                    <span class="xp-counter">1500 XP</span>
                 </div>
             </div>
         </div>
@@ -30,11 +30,11 @@
                     <input type="checkbox" id="themeToggle" checked>
                     <span class="slider"></span>
                 </label>
-                <span class="toggle-label">Gamified</span>
+                <span class="toggle-label">Theme</span>
             </div>
             <div class="profile-badge">
                 <span class="badge-icon">👤</span>
-                <span>Profile</span>
+                <span>Sign Out</span>
             </div>
         </div>
     </header>
@@ -48,11 +48,11 @@
                     <div class="achievement-icon">
                         <div class="achievement-glow"></div>
                         <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f333.svg" alt="Tree">
-                        <div class="achievement-rarity rarity-rare">R</div>
+                        <!-- <div class="achievement-rarity rarity-rare">R</div> -->
                         <div class="achievement-particles" id="particles1"></div>
                     </div>
                     <div class="achievement-text">
-                        <div class="achievement-title">🌱 Eco Guardian</div>
+                        <div class="achievement-title"> Eco Guardian</div>
                         <div class="achievement-desc">Saved 500kg of CO2 emissions</div>
                     </div>
                     <div class="achievement-progress" style="width: 100%"></div>
@@ -61,11 +61,11 @@
                     <div class="achievement-icon">
                         <div class="achievement-glow"></div>
                         <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9e0.svg" alt="Brain">
-                        <div class="achievement-rarity rarity-epic">E</div>
+                        <!-- <div class="achievement-rarity rarity-epic">E</div> -->
                     </div>
                     <div class="achievement-text">
-                        <div class="achievement-title">🎯 Policy Mastermind</div>
-                        <div class="achievement-desc">Influenced 3 major policy changes</div>
+                        <div class="achievement-title"> Policy Champion</div>
+                        <div class="achievement-desc">Adhered to 3 major policy changes</div>
                     </div>
                     <div class="achievement-progress" style="width: 100%"></div>
                 </div>
@@ -73,11 +73,11 @@
                 <div class="achievement-item locked">
                     <div class="achievement-icon locked">
                         <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f451.svg" alt="Crown">
-                        <div class="achievement-rarity rarity-legendary">L</div>
+                        <!-- <div class="achievement-rarity rarity-legendary">L</div> -->
                     </div>
                     <div class="achievement-text">
-                        <div class="achievement-title">👑 Ultimate Champion</div>
-                        <div class="achievement-desc">Reach the #1 spot on leaderboard</div>
+                        <div class="achievement-title"> Travel Ninja</div>
+                        <div class="achievement-desc">Never missed a flight</div>
                     </div>
                     <div class="achievement-progress" style="width: 15%"></div>
                 </div>
@@ -96,6 +96,59 @@
                 </div>
             </div>
 
+            <!-- redeem section -->
+            <div class="leaderboard-section">
+                <h3><span class="section-icon"><img src="box.png" alt="Brain" height="20"></span> REDEEM XP</h3>
+
+                <div class="redeemed-item"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 class="redeemed-title">Total XP Redeemed</h4>
+                    <span class="score">1000</span>
+                </div>
+
+                <div class="redeemed-item"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px">
+                    <h4 class="redeemed-title">XP Balance</h4>
+                    <span class="score">400</span>
+                </div>
+
+                <div class="achievement-item completed">
+                    <div class="achievement-icon">
+                        <div class="achievement-glow"></div>
+                        <img src="gift-card.png" alt="Brain">
+                        <div class="achievement-rarity rarity-epic">4+</div>
+                    </div>
+                    <div class="achievement-text">
+                        <div class="achievement-title">Gift Card</div>
+                    </div>
+                    <div class="achievement-progress" style="width: 100%"></div>
+                </div>
+
+                <div class="achievement-item completed">
+                    <div class="achievement-icon">
+                        <div class="achievement-glow"></div>
+                        <img src="discount-raffles.png" alt="Brain">
+                        <div class="achievement-rarity rarity-epic">7+</div>
+                    </div>
+                    <div class="achievement-text">
+                        <div class="achievement-title">Discount Coupon</div>
+                    </div>
+                    <div class="achievement-progress" style="width: 100%"></div>
+                </div>
+
+                <div class="achievement-item completed">
+                    <div class="achievement-icon">
+                        <div class="achievement-glow"></div>
+                        <img src="mystery.png" alt="Brain">
+                        <div class="achievement-rarity rarity-epic">2+</div>
+                    </div>
+                    <div class="achievement-text">
+                        <div class="achievement-title">Mystery Box</div>
+                        <!-- <div class="achievement-desc">200/1000 Points</div> -->
+                    </div>
+                    <div class="achievement-progress" style="width: 100%"></div>
+                </div>
+            </div>
         </aside>
 
         <!-- Main Content -->
@@ -121,7 +174,7 @@
                 </div>
 
                 <!-- NEW: Fly Again Quick Routes Section -->
-                <div class="fly-again-section ">
+                <div class="fly-again-section">
                     <div class="fly-again-label">
                         <span class="fly-again-icon">✈️</span>
                         <span>Fly Again</span>
@@ -146,7 +199,7 @@
                     </div>
                 </div>
 
-                <div class="flight-search">
+                <div class="flight-search ">
 
                     <div class="trip-type ">
                         <label class="radio-option">
@@ -207,45 +260,48 @@
 
         </main>
 
-        <!-- Right Sidebar -->
-        <div class="leaderboard-section">
-            <h3><span class="section-icon">👑</span>LEADERBOARD</h3>
-            <div class="leaderboard-item">
-                <span class="rank">👤<span class="rank-number gold">1</span></span>
-                <span class="name">Rachel</span>
-                <span class="score">4298<span class="score-change">+42</span></span>
-                <span class="level-badge">Lvl 12</span>
-            </div>
-            <div class="leaderboard-item">
-                <span class="rank">👤<span class="rank-number silver">2</span></span>
-                <span class="name">Henry</span>
-                <span class="score">3078</span>
-                <span class="level-badge">Lvl 9</span>
-            </div>
-            <div class="leaderboard-item">
-                <span class="rank">👤<span class="rank-number bronze">3</span></span>
-                <span class="name">Lucas</span>
-                <span class="score">3008</span>
-                <span class="level-badge">Lvl 8</span>
-            </div>
-            <div class="leaderboard-item">
-                <span class="rank">👤<span class="rank-number">4</span></span>
-                <span class="name">You</span>
-                <span class="score">2756</span>
-                <span class="level-badge">Lvl 7</span>
-            </div>
 
-            <div class="progress-section">
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Weekly Challenge</span>
-                        <span>3/5 completed</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 60%"></div>
-                    </div>
+
+        <aside class="left-sidebar">
+
+            <div class="leaderboard-section">
+                <h3><span class="section-icon">👑</span>LEADERBOARD</h3>
+                <div class="leaderboard-item">
+                    <span class="rank">👤<span class="rank-number gold">1</span></span>
+                    <span class="name">Rachel</span>
+                    <span class="score">4298 XP</span>
+                    <span class="level-badge">Lvl 12</span>
                 </div>
-                <div class="progress-item">
+                <div class="leaderboard-item">
+                    <span class="rank">👤<span class="rank-number silver">2</span></span>
+                    <span class="name">Henry</span>
+                    <span class="score">3078 XP</span>
+                    <span class="level-badge">Lvl 9</span>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="rank">👤<span class="rank-number bronze">3</span></span>
+                    <span class="name">Lucas</span>
+                    <span class="score">3008 XP</span>
+                    <span class="level-badge">Lvl 8</span>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="rank">👤<span class="rank-number">17</span></span>
+                    <span class="name">You</span>
+                    <span class="myscore">1500 XP</span>
+                    <span class="level-badge">Lvl 2</span>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span>Pending Approvels</span>
+                            <span>3/5 completed</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="progress-item">
                     <div class="progress-label">
                         <span>Monthly Goal</span>
                         <span>12/20 tasks</span>
@@ -253,13 +309,119 @@
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 60%"></div>
                     </div>
+                </div> -->
                 </div>
             </div>
-        </div>
+
+
+            <div class="xp-section">
+                <h3><span class="section-icon">⚡</span>GET MORE XP</h3>
+                <div class="xp-list">
+                    <div class="xp-list-container">
+                        <div class="xp-item">
+                            <span class="xp-description">Book a round trip</span>
+                            <span class="xp-value">+300 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Choose policy-compliant flights</span>
+                            <span class="xp-value">+300 XP</span>
+                        </div>
+                        <div class="xp-item badge-unlock">
+                            <span class="xp-description">Reach leaderboard top</span>
+                            <span class="xp-value">Unlock badges</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Complete profile</span>
+                            <span class="xp-value">+100 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Refer a friend</span>
+                            <span class="xp-value">+250 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Book within budget</span>
+                            <span class="xp-value">+150 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Use mobile app</span>
+                            <span class="xp-value">+50 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Early check-in</span>
+                            <span class="xp-value">+75 XP</span>
+                        </div>
+                        <div class="xp-item streak-badge">
+                            <span class="xp-description">5 consecutive bookings</span>
+                            <span class="xp-value">Streak badge</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Review your trip</span>
+                            <span class="xp-value">+80 XP</span>
+                        </div>
+                        <!-- Duplicate items for seamless scrolling -->
+                        <div class="xp-item">
+                            <span class="xp-description">Book a round trip</span>
+                            <span class="xp-value">+300 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Choose policy-compliant flights</span>
+                            <span class="xp-value">+300 XP</span>
+                        </div>
+                        <div class="xp-item badge-unlock">
+                            <span class="xp-description">Reach leaderboard top</span>
+                            <span class="xp-value">Unlock badges</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Complete profile</span>
+                            <span class="xp-value">+100 XP</span>
+                        </div>
+                        <div class="xp-item">
+                            <span class="xp-description">Refer a friend</span>
+                            <span class="xp-value">+250 XP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Right Sidebar -->
+
 
     </div>
 
+    <!-- Bottom Navigation Component -->
     <nav class="bottom-navigation" id="bottomNav">
+        <div class="nav-container">
+            <button class="nav-btn active" data-nav="search">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Search</span>
+            </button>
+            <button class="nav-btn" data-nav="trip">
+                <span class="nav-icon">✈️</span>
+                <span class="nav-text">My Trip</span>
+            </button>
+            <button class="nav-btn" data-nav="policy">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Policy</span>
+            </button>
+            <button class="nav-btn" data-nav="expenses">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Expenses</span>
+            </button>
+            <button class="nav-btn" data-nav="trip">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Support</span>
+            </button>
+            <button class="nav-btn nav-add-btn" data-nav="add">
+                <span class="nav-icon-add">➕</span>
+            </button>
+        </div>
+    </nav>
+
+
+
+    <!-- <nav class="bottom-navigation" id="bottomNav">
         <div class="nav-container">
             <button class="nav-btn active" data-nav="search">
                 <span class="nav-icon">🔍</span>
@@ -268,7 +430,6 @@
             <button class="nav-btn" data-nav="policy">
                 <span class="nav-icon">📋</span>
                 <span class="nav-text">Policy</span>
-                <!-- <span class="badge">2</span> -->
             </button>
             <button class="nav-btn" data-nav="expenses">
                 <span class="nav-icon">💰</span>
@@ -287,7 +448,7 @@
                 <span class="nav-text">My Trip</span>
             </button>
         </div>
-    </nav>
+    </nav> -->
 
 
     <script src="script.js"></script>
