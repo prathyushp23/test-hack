@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamified Leaderboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <style>
         /* CSS Variables for Theme Management */
         :root {
@@ -118,7 +121,7 @@
             box-shadow: var(--hover-glow);
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
             transform: translateX(26px);
         }
 
@@ -154,8 +157,13 @@
         }
 
         @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
         }
 
         .leaderboard-section h3 {
@@ -175,8 +183,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .leaderboard-item {
@@ -236,9 +251,17 @@
             font-weight: bold;
         }
 
-        .rank-number.gold { background: var(--gold); }
-        .rank-number.silver { background: var(--silver); }
-        .rank-number.bronze { background: var(--bronze); }
+        .rank-number.gold {
+            background: var(--gold);
+        }
+
+        .rank-number.silver {
+            background: var(--silver);
+        }
+
+        .rank-number.bronze {
+            background: var(--bronze);
+        }
 
         .name {
             flex: 1;
@@ -261,9 +284,20 @@
         }
 
         @keyframes scoreIncrease {
-            0% { opacity: 0; transform: translateY(10px); }
-            50% { opacity: 1; transform: translateY(-5px); }
-            100% { opacity: 0; transform: translateY(-15px); }
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateY(-5px);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
         }
 
         .level-badge {
@@ -323,16 +357,24 @@
         }
 
         @keyframes progressShimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
         }
+
+        /* Get More XP Section - Enhanced */
+
 
         /* Get More XP Section - Enhanced */
         .xp-section {
             background: var(--bg-card);
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 15px;
-            box-shadow: 0 8px 32px var(--shadow-color);
+            box-shadow: 0 6px 20px var(--shadow-color);
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
@@ -352,17 +394,17 @@
         .xp-section h3 {
             font-family: 'Orbitron', monospace;
             color: var(--accent-secondary);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            text-shadow: 0 0 10px var(--accent-secondary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            text-shadow: 0 0 4px var(--accent-secondary);
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        /* Enhanced XP List - No Manual Scrolling */
+        /* XP List */
         .xp-list {
-            height: 400px;
+            height: 360px;
             overflow: hidden;
             position: relative;
             mask: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);
@@ -376,94 +418,107 @@
         }
 
         @keyframes autoScroll {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
         }
 
         .xp-list-container:hover {
             animation-play-state: paused;
         }
 
-        /* Enhanced XP Items with Gamified Effects */
+        /* XP Items */
         .xp-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.6rem 1rem;
-            margin-bottom: 0.4rem;
+            padding: 0.4rem 0.75rem;
+            margin-bottom: 0.3rem;
             border-radius: 25px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             overflow: hidden;
         }
 
-        /* Auto-cycling highlight effect */
-        .xp-item:nth-child(1) { animation: cycleHighlight 12s infinite 0s; }
-        .xp-item:nth-child(2) { animation: cycleHighlight 12s infinite 1.2s; }
-        .xp-item:nth-child(3) { animation: cycleHighlight 12s infinite 2.4s; }
-        .xp-item:nth-child(4) { animation: cycleHighlight 12s infinite 3.6s; }
-        .xp-item:nth-child(5) { animation: cycleHighlight 12s infinite 4.8s; }
-        .xp-item:nth-child(6) { animation: cycleHighlight 12s infinite 6s; }
-        .xp-item:nth-child(7) { animation: cycleHighlight 12s infinite 7.2s; }
-        .xp-item:nth-child(8) { animation: cycleHighlight 12s infinite 8.4s; }
-        .xp-item:nth-child(9) { animation: cycleHighlight 12s infinite 9.6s; }
-        .xp-item:nth-child(10) { animation: cycleHighlight 12s infinite 10.8s; }
-
+        /* Auto-cycling highlight (softened) */
         @keyframes cycleHighlight {
-            0%, 90% { 
+
+            0%,
+            90% {
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
                 transform: translateX(0) scale(1);
                 box-shadow: none;
-                border-color: rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.04);
             }
-            5%, 15% { 
-                background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-                transform: translateX(10px) scale(1.05);
-                box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4), 0 0 60px rgba(255, 140, 66, 0.3);
+
+            5%,
+            15% {
+                background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 140, 66, 0.1));
+                transform: translateX(6px) scale(1.03);
+                box-shadow: 0 6px 16px rgba(0, 212, 255, 0.2), 0 0 24px rgba(255, 140, 66, 0.15);
                 border-color: var(--accent-primary);
             }
         }
 
-        /* Floating XP particles */
-        .xp-item::before {
-            content: '✨';
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            opacity: 0;
-            animation: floatParticle 12s infinite;
-            animation-delay: inherit;
-        }
-
         @keyframes floatParticle {
-            0%, 90% { 
+
+            0%,
+            90% {
                 opacity: 0;
                 transform: translateY(-50%) translateX(0) rotate(0deg);
             }
+
             5% {
-                opacity: 1;
+                opacity: 0.6;
                 transform: translateY(-50%) translateX(-10px) rotate(180deg);
             }
+
             15% {
                 opacity: 0;
                 transform: translateY(-50%) translateX(-30px) rotate(360deg);
             }
         }
 
-        /* Enhanced hover effects */
+        .xp-item::before {
+            content: '✨';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.5rem;
+            opacity: 0;
+            animation: floatParticle 12s infinite;
+            animation-delay: inherit;
+        }
+
+        /* Hover: smoother and less aggressive */
         .xp-item:hover {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 140, 66, 0.2)) !important;
-            transform: translateX(15px) scale(1.08) !important;
-            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3), 0 0 80px rgba(255, 140, 66, 0.2) !important;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 140, 66, 0.1)) !important;
+            transform: translateX(10px) scale(1.05) !important;
+            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.2), 0 0 50px rgba(255, 140, 66, 0.1) !important;
             animation-play-state: paused;
         }
 
-        /* Glowing border effect */
+        @keyframes borderGlow {
+
+            0%,
+            90% {
+                left: -100%;
+            }
+
+            5%,
+            15% {
+                left: 100%;
+            }
+        }
+
         .xp-item::after {
             content: '';
             position: absolute;
@@ -471,19 +526,14 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
             animation: borderGlow 12s infinite;
             animation-delay: inherit;
         }
 
-        @keyframes borderGlow {
-            0%, 90% { left: -100%; }
-            5%, 15% { left: 100%; }
-        }
-
         .xp-description {
             flex: 1;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
             color: var(--text-primary);
             transition: all 0.3s ease;
@@ -492,20 +542,31 @@
         }
 
         .xp-value {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.3rem 0.8rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 20px;
             background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
             color: black;
             opacity: 0.9;
-            transition: all 0.3s ease;
             position: relative;
             z-index: 2;
             overflow: hidden;
         }
 
-        /* XP Value glow effect */
+        @keyframes xpGlow {
+
+            0%,
+            90% {
+                left: -100%;
+            }
+
+            5%,
+            15% {
+                left: 100%;
+            }
+        }
+
         .xp-value::before {
             content: '';
             position: absolute;
@@ -513,16 +574,12 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
             animation: xpGlow 12s infinite;
             animation-delay: inherit;
         }
 
-        @keyframes xpGlow {
-            0%, 90% { left: -100%; }
-            5%, 15% { left: 100%; }
-        }
-
+        /* Badges */
         .xp-item.badge-unlock {
             border-left: 3px solid var(--gold);
             position: relative;
@@ -537,7 +594,6 @@
             color: black;
         }
 
-        /* Streak badge special effects */
         .xp-item.streak-badge {
             border-left: 3px solid var(--accent-tertiary);
         }
@@ -546,19 +602,24 @@
             content: '🔥';
         }
 
-        /* Pulsing glow for special items */
+        @keyframes specialPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.25);
+            }
+
+            50% {
+                box-shadow: 0 0 16px rgba(255, 215, 0, 0.4), 0 0 32px rgba(255, 215, 0, 0.2);
+            }
+        }
+
         .xp-item.badge-unlock,
         .xp-item.streak-badge {
             animation: cycleHighlight 12s infinite, specialPulse 3s ease-in-out infinite;
         }
 
-        @keyframes specialPulse {
-            0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3); }
-        }
-
-        /* Duplicate items for seamless scrolling */
-        .xp-list-container > .xp-item:nth-child(n+11) {
+        .xp-list-container>.xp-item:nth-child(n+11) {
             animation-delay: 0s;
         }
 
@@ -568,22 +629,25 @@
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
-            
+
             .theme-toggle {
                 top: 1rem;
                 right: 1rem;
             }
-            
+
             body {
-                padding: 1rem;
+                padding: 0.75rem;
             }
-            
+
             .xp-list {
-                height: 300px;
+                height: 280px;
             }
         }
+
+        /* Enhanced XP List - No Manual Scrolling */
     </style>
 </head>
+
 <body>
     <!-- Theme Toggle -->
     <div class="theme-toggle">
@@ -722,7 +786,7 @@
         const body = document.body;
         const toggleLabel = document.querySelector('.toggle-label');
 
-        themeToggle.addEventListener('change', function() {
+        themeToggle.addEventListener('change', function () {
             if (this.checked) {
                 body.classList.remove('light-theme');
                 toggleLabel.textContent = 'Dark Mode';
@@ -734,9 +798,9 @@
 
         // Enhanced XP Item interactions
         const xpItems = document.querySelectorAll('.xp-item');
-        
+
         xpItems.forEach((item, index) => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function () {
                 // Create click burst effect
                 const burst = document.createElement('div');
                 burst.style.position = 'absolute';
@@ -749,9 +813,9 @@
                 burst.style.top = '50%';
                 burst.style.transform = 'translate(-50%, -50%) scale(0)';
                 burst.style.animation = 'clickBurst 0.6s ease-out forwards';
-                
+
                 this.appendChild(burst);
-                
+
                 // Remove burst after animation
                 setTimeout(() => {
                     if (burst.parentNode) {
@@ -782,9 +846,9 @@
             sparkle.style.top = Math.random() * 100 + '%';
             sparkle.style.pointerEvents = 'none';
             sparkle.style.animation = 'sparkle 2s ease-out forwards';
-            
+
             xpSection.appendChild(sparkle);
-            
+
             setTimeout(() => {
                 if (sparkle.parentNode) {
                     sparkle.parentNode.removeChild(sparkle);
@@ -803,4 +867,5 @@
         document.head.appendChild(sparkleStyle);
     </script>
 </body>
+
 </html>
