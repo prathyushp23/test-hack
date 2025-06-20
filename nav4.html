@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wide Bottom Navigation Component</title>
+    <style>
+        /* Bottom Navigation Styles */
+        .bottom-navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .bottom-navigation.hidden {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--nav-bg, rgba(30, 30, 45, 0.95));
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 2px solid var(--nav-border, rgba(0, 212, 255, 0.3));
+            border-radius: 25px;
+            padding: 0.3rem 0.8rem;
+            width: fit-content;
+            height: 36px;
+            box-shadow: 
+                0 8px 32px var(--nav-shadow, rgba(0, 0, 0, 0.3)),
+                0 0 0 1px var(--nav-glow, rgba(0, 212, 255, 0.1)),
+                inset 0 1px 0 var(--nav-highlight, rgba(255, 255, 255, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--nav-accent, #00ffff), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.3rem;
+            background: transparent;
+            border: none;
+            padding: 0.25rem 0.6rem;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            height: 30px;
+            color: var(--nav-text, rgba(255, 255, 255, 0.7));
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: var(--nav-hover-bg, rgba(0, 212, 255, 0.15));
+            color: var(--nav-hover-text, #ffffff);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 
+                0 4px 20px var(--nav-hover-shadow, rgba(0, 212, 255, 0.3)),
+                inset 0 1px 0 var(--nav-hover-highlight, rgba(255, 255, 255, 0.2));
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--nav-active-bg1, #00ffff), var(--nav-active-bg2, #ff8c42));
+            color: var(--nav-active-text, #000000);
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 20px var(--nav-active-shadow, rgba(0, 212, 255, 0.6)),
+                0 0 40px var(--nav-active-shadow, rgba(0, 212, 255, 0.3)),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: activeGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes activeGlow {
+            0% { 
+                box-shadow: 
+                    0 0 20px var(--nav-active-shadow, rgba(0, 212, 255, 0.6)),
+                    0 0 40px var(--nav-active-shadow, rgba(0, 212, 255, 0.3)),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+            100% { 
+                box-shadow: 
+                    0 0 30px var(--nav-active-shadow, rgba(0, 212, 255, 0.9)),
+                    0 0 60px var(--nav-active-shadow, rgba(0, 212, 255, 0.5)),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .nav-btn:hover .nav-icon {
+            transform: scale(1.2);
+        }
+
+        .nav-btn.active .nav-icon {
+            transform: scale(1.2);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .nav-text {
+            font-size: 0.7rem;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover .nav-text,
+        .nav-btn.active .nav-text {
+            opacity: 1;
+        }
+
+        /* Ripple Effect */
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--nav-ripple, rgba(255, 255, 255, 0.3));
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .nav-btn:active::after {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Light Theme Variables */
+        .bottom-navigation.light-theme {
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --nav-border: rgba(0, 74, 173, 0.3);
+            --nav-shadow: rgba(0, 0, 0, 0.1);
+            --nav-glow: rgba(0, 74, 173, 0.1);
+            --nav-highlight: rgba(0, 0, 0, 0.1);
+            --nav-accent: #004aad;
+            --nav-text: rgba(44, 62, 80, 0.7);
+            --nav-hover-bg: rgba(0, 74, 173, 0.1);
+            --nav-hover-text: #2c3e50;
+            --nav-hover-shadow: rgba(0, 74, 173, 0.2);
+            --nav-hover-highlight: rgba(0, 0, 0, 0.1);
+            --nav-active-bg1: #004aad;
+            --nav-active-bg2: #0066cc;
+            --nav-active-text: #ffffff;
+            --nav-active-shadow: rgba(0, 74, 173, 0.3);
+            --nav-active-border1: #004aad;
+            --nav-active-border2: #0066cc;
+            --nav-active-border3: #004aad;
+            --nav-ripple: rgba(0, 74, 173, 0.3);
+        }
+
+        /* Notification Badge */
+        .nav-btn .badge {
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0.25rem 0.6rem;
+                height: 32px;
+                gap: 0.2rem;
+            }
+            
+            .nav-btn {
+                padding: 0.2rem 0.5rem;
+                height: 26px;
+                gap: 0.25rem;
+            }
+            
+            .nav-icon {
+                font-size: 0.9rem;
+            }
+            
+            .nav-text {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0.2rem 0.5rem;
+                height: 28px;
+                gap: 0.15rem;
+            }
+            
+            .nav-btn {
+                padding: 0.15rem 0.4rem;
+                height: 24px;
+                gap: 0.2rem;
+            }
+            
+            .nav-text {
+                font-size: 0.55rem;
+            }
+
+            .nav-icon {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Demo styles for the page content */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1b3d, #0f1029);
+            color: white;
+            min-height: 200vh; /* Make page scrollable for demo */
+        }
+
+        .demo-content {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .theme-toggle-demo {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        body.light-theme {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            color: #2c3e50;
+        }
+
+        body.light-theme .theme-toggle-demo {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-content">
+        <h1>Wide Bottom Navigation Component Demo</h1>
+        <p>This navigation bar is now wider and shorter with icons and text arranged horizontally.</p>
+        <p>Scroll down to see the navigation hide, and scroll up or stop scrolling to see it reappear.</p>
+        <p>Try clicking the theme toggle button in the top right to switch between light and dark themes.</p>
+        <p>The navigation supports hover effects, active states, and responsive design.</p>
+        
+        <!-- Add more content to make page scrollable -->
+        <div style="height: 100vh; display: flex; align-items: center; justify-content: center; font-size: 2rem; opacity: 0.5;">
+            Scroll down more...
+        </div>
+        <div style="height: 100vh; display: flex; align-items: center; justify-content: center; font-size: 2rem; opacity: 0.5;">
+            Keep scrolling...
+        </div>
+    </div>
+
+    <button class="theme-toggle-demo" onclick="toggleTheme()">🌙 Toggle Theme</button>
+
+    <!-- Bottom Navigation Component -->
+    <nav class="bottom-navigation" id="bottomNav">
+        <div class="nav-container">
+            <button class="nav-btn active" data-nav="search">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Search</span>
+            </button>
+            <button class="nav-btn" data-nav="policy">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Policy</span>
+                <!-- <span class="badge">2</span> -->
+            </button>
+            <button class="nav-btn" data-nav="expenses">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Expenses</span>
+            </button>
+            <button class="nav-btn" data-nav="weather">
+                <span class="nav-icon">🌤️</span>
+                <span class="nav-text">Weather</span>
+            </button>
+            <button class="nav-btn" data-nav="rebook">
+                <span class="nav-icon">📖</span>
+                <span class="nav-text">Rebook</span>
+            </button>
+            <button class="nav-btn" data-nav="trip">
+                <span class="nav-icon">✈️</span>
+                <span class="nav-text">My Trip</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Bottom Navigation JavaScript
+        class BottomNavigation {
+            constructor() {
+                this.nav = document.getElementById('bottomNav');
+                this.navButtons = document.querySelectorAll('.nav-btn');
+                this.lastScrollY = window.scrollY;
+                this.scrollTimeout = null;
+                this.isScrolling = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.setupScrollHandler();
+                this.setupNavigationHandler();
+                this.setupThemeHandler();
+            }
+
+            setupScrollHandler() {
+                let ticking = false;
+
+                const handleScroll = () => {
+                    const currentScrollY = window.scrollY;
+                    
+                    // Clear existing timeout
+                    clearTimeout(this.scrollTimeout);
+                    
+                    // Show/hide based on scroll direction
+                    if (currentScrollY > this.lastScrollY && currentScrollY > 100) {
+                        // Scrolling down - hide nav
+                        this.hideNav();
+                        this.isScrolling = true;
+                    } else if (currentScrollY < this.lastScrollY) {
+                        // Scrolling up - show nav
+                        this.showNav();
+                        this.isScrolling = true;
+                    }
+                    
+                    // Set timeout to show nav when scrolling stops
+                    this.scrollTimeout = setTimeout(() => {
+                        this.showNav();
+                        this.isScrolling = false;
+                    }, 150);
+                    
+                    this.lastScrollY = currentScrollY;
+                };
+
+                const onScroll = () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            handleScroll();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                };
+
+                window.addEventListener('scroll', onScroll, { passive: true });
+            }
+
+            hideNav() {
+                this.nav.classList.add('hidden');
+            }
+
+            showNav() {
+                this.nav.classList.remove('hidden');
+            }
+
+            setupNavigationHandler() {
+                this.navButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Remove active class from all buttons
+                        this.navButtons.forEach(btn => btn.classList.remove('active'));
+                        
+                        // Add active class to clicked button
+                        button.classList.add('active');
+                        
+                        // Get navigation target
+                        const navTarget = button.dataset.nav;
+                        
+                        // Dispatch custom event for navigation
+                        window.dispatchEvent(new CustomEvent('bottomNavClick', {
+                            detail: { target: navTarget, button: button }
+                        }));
+                        
+                        console.log(`Navigation clicked: ${navTarget}`);
+                    });
+
+                    // Add ripple effect on click
+                    button.addEventListener('mousedown', (e) => {
+                        button.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            button.style.transform = '';
+                        }, 150);
+                    });
+                });
+            }
+
+            setupThemeHandler() {
+                // Listen for theme changes
+                window.addEventListener('themeChange', (e) => {
+                    if (e.detail.theme === 'light') {
+                        this.nav.classList.add('light-theme');
+                    } else {
+                        this.nav.classList.remove('light-theme');
+                    }
+                });
+            }
+
+            // Public methods
+            setActiveNav(navTarget) {
+                this.navButtons.forEach(btn => {
+                    if (btn.dataset.nav === navTarget) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            updateBadge(navTarget, count) {
+                const button = document.querySelector(`[data-nav="${navTarget}"]`);
+                if (button) {
+                    let badge = button.querySelector('.badge');
+                    if (count > 0) {
+                        if (!badge) {
+                            badge = document.createElement('span');
+                            badge.className = 'badge';
+                            button.appendChild(badge);
+                        }
+                        badge.textContent = count > 99 ? '99+' : count;
+                    } else if (badge) {
+                        badge.remove();
+                    }
+                }
+            }
+        }
+
+        // Initialize Bottom Navigation
+        const bottomNav = new BottomNavigation();
+
+        // Demo theme toggle function
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            
+            // Dispatch theme change event
+            window.dispatchEvent(new CustomEvent('themeChange', {
+                detail: { theme: isLight ? 'light' : 'dark' }
+            }));
+        }
+
+        // Demo: Listen for navigation clicks
+        window.addEventListener('bottomNavClick', (e) => {
+            console.log('Bottom navigation clicked:', e.detail);
+            // You can handle navigation logic here
+        });
+
+        // Demo: Update badge example
+        setTimeout(() => {
+            bottomNav.updateBadge('policy', 3);
+        }, 3000);
+    </script>
+</body>
+</html>
