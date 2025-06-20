@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Theme Management */
+        :root {
+            --bg-primary: #1a1b3d;
+            --bg-secondary: #0f1029;
+            --bg-card: rgba(30, 30, 45, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #8b93b8;
+            --accent-primary: #00ffff;
+            --accent-secondary: #ff8c42;
+            --accent-tertiary: #8b5cf6;
+            --accent-quaternary: #ffd700;
+            --border-color: rgba(0, 212, 255, 0.3);
+            --shadow-color: rgba(0, 255, 255, 0.15);
+            --hover-glow: 0 0 20px rgba(0, 212, 255, 0.4);
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        /* Light Theme Variables */
+        .light-theme {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --accent-primary: #004aad;
+            --accent-secondary: #0066cc;
+            --accent-tertiary: #004aad;
+            --accent-quaternary: #0066cc;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 74, 173, 0.1);
+            --hover-glow: 0 0 10px rgba(0, 74, 173, 0.3);
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .toggle-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--accent-primary);
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: var(--hover-glow);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Main Container */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Leaderboard Section */
+        .leaderboard-section {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaderboard-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .leaderboard-section h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.4rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard-item:hover {
+            background: var(--bg-secondary);
+            transform: translateX(5px) scale(1.02);
+            box-shadow: var(--hover-glow);
+        }
+
+        .leaderboard-item:first-child {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            border-color: var(--gold);
+        }
+
+        .leaderboard-item:nth-child(2) {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.1));
+            border-color: var(--silver);
+        }
+
+        .leaderboard-item:nth-child(3) {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.1));
+            border-color: var(--bronze);
+        }
+
+        .rank {
+            font-size: 1.2rem;
+            min-width: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .rank-number {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-primary);
+            color: black;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .rank-number.gold { background: var(--gold); }
+        .rank-number.silver { background: var(--silver); }
+        .rank-number.bronze { background: var(--bronze); }
+
+        .name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .score {
+            color: var(--accent-secondary);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .score-change {
+            position: absolute;
+            top: -15px;
+            right: 0;
+            font-size: 0.6rem;
+            color: #4ade80;
+            animation: scoreIncrease 2s ease-out;
+        }
+
+        @keyframes scoreIncrease {
+            0% { opacity: 0; transform: translateY(10px); }
+            50% { opacity: 1; transform: translateY(-5px); }
+            100% { opacity: 0; transform: translateY(-15px); }
+        }
+
+        .level-badge {
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: black;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        /* Progress Bars */
+        .progress-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 3px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: progressShimmer 2s infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Get More XP Section - Enhanced */
+        .xp-section {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .xp-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .xp-section h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--accent-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--accent-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Enhanced XP List - No Manual Scrolling */
+        .xp-list {
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            mask: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+
+        .xp-list-container {
+            position: absolute;
+            width: 100%;
+            animation: autoScroll 30s linear infinite;
+        }
+
+        @keyframes autoScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        .xp-list-container:hover {
+            animation-play-state: paused;
+        }
+
+        /* Enhanced XP Items with Gamified Effects */
+        .xp-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 1rem;
+            margin-bottom: 0.4rem;
+            border-radius: 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        /* Auto-cycling highlight effect */
+        .xp-item:nth-child(1) { animation: cycleHighlight 12s infinite 0s; }
+        .xp-item:nth-child(2) { animation: cycleHighlight 12s infinite 1.2s; }
+        .xp-item:nth-child(3) { animation: cycleHighlight 12s infinite 2.4s; }
+        .xp-item:nth-child(4) { animation: cycleHighlight 12s infinite 3.6s; }
+        .xp-item:nth-child(5) { animation: cycleHighlight 12s infinite 4.8s; }
+        .xp-item:nth-child(6) { animation: cycleHighlight 12s infinite 6s; }
+        .xp-item:nth-child(7) { animation: cycleHighlight 12s infinite 7.2s; }
+        .xp-item:nth-child(8) { animation: cycleHighlight 12s infinite 8.4s; }
+        .xp-item:nth-child(9) { animation: cycleHighlight 12s infinite 9.6s; }
+        .xp-item:nth-child(10) { animation: cycleHighlight 12s infinite 10.8s; }
+
+        @keyframes cycleHighlight {
+            0%, 90% { 
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+                transform: translateX(0) scale(1);
+                box-shadow: none;
+                border-color: rgba(255, 255, 255, 0.05);
+            }
+            5%, 15% { 
+                background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+                transform: translateX(10px) scale(1.05);
+                box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4), 0 0 60px rgba(255, 140, 66, 0.3);
+                border-color: var(--accent-primary);
+            }
+        }
+
+        /* Floating XP particles */
+        .xp-item::before {
+            content: '✨';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0;
+            animation: floatParticle 12s infinite;
+            animation-delay: inherit;
+        }
+
+        @keyframes floatParticle {
+            0%, 90% { 
+                opacity: 0;
+                transform: translateY(-50%) translateX(0) rotate(0deg);
+            }
+            5% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(-10px) rotate(180deg);
+            }
+            15% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(-30px) rotate(360deg);
+            }
+        }
+
+        /* Enhanced hover effects */
+        .xp-item:hover {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 140, 66, 0.2)) !important;
+            transform: translateX(15px) scale(1.08) !important;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3), 0 0 80px rgba(255, 140, 66, 0.2) !important;
+            animation-play-state: paused;
+        }
+
+        /* Glowing border effect */
+        .xp-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: borderGlow 12s infinite;
+            animation-delay: inherit;
+        }
+
+        @keyframes borderGlow {
+            0%, 90% { left: -100%; }
+            5%, 15% { left: 100%; }
+        }
+
+        .xp-description {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .xp-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: black;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* XP Value glow effect */
+        .xp-value::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: xpGlow 12s infinite;
+            animation-delay: inherit;
+        }
+
+        @keyframes xpGlow {
+            0%, 90% { left: -100%; }
+            5%, 15% { left: 100%; }
+        }
+
+        .xp-item.badge-unlock {
+            border-left: 3px solid var(--gold);
+            position: relative;
+        }
+
+        .xp-item.badge-unlock::before {
+            content: '🏆';
+        }
+
+        .xp-item.badge-unlock .xp-value {
+            background: linear-gradient(45deg, var(--gold), var(--accent-quaternary));
+            color: black;
+        }
+
+        /* Streak badge special effects */
+        .xp-item.streak-badge {
+            border-left: 3px solid var(--accent-tertiary);
+        }
+
+        .xp-item.streak-badge::before {
+            content: '🔥';
+        }
+
+        /* Pulsing glow for special items */
+        .xp-item.badge-unlock,
+        .xp-item.streak-badge {
+            animation: cycleHighlight 12s infinite, specialPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes specialPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3); }
+        }
+
+        /* Duplicate items for seamless scrolling */
+        .xp-list-container > .xp-item:nth-child(n+11) {
+            animation-delay: 0s;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+            
+            .xp-list {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <label class="switch">
+            <input type="checkbox" id="themeToggle" checked>
+            <span class="slider"></span>
+        </label>
+        <span class="toggle-label">Dark Mode</span>
+    </div>
+
+    <div class="container">
+        <!-- Leaderboard Section -->
+        <div class="leaderboard-section">
+            <h3><span class="section-icon">👑</span>LEADERBOARD</h3>
+            <div class="leaderboard-item">
+                <span class="rank">👤<span class="rank-number gold">1</span></span>
+                <span class="name">Rachel</span>
+                <span class="score">4298<span class="score-change">+42</span></span>
+                <span class="level-badge">Lvl 12</span>
+            </div>
+            <div class="leaderboard-item">
+                <span class="rank">👤<span class="rank-number silver">2</span></span>
+                <span class="name">Henry</span>
+                <span class="score">3078</span>
+                <span class="level-badge">Lvl 9</span>
+            </div>
+            <div class="leaderboard-item">
+                <span class="rank">👤<span class="rank-number bronze">3</span></span>
+                <span class="name">Lucas</span>
+                <span class="score">3008</span>
+                <span class="level-badge">Lvl 8</span>
+            </div>
+            <div class="leaderboard-item">
+                <span class="rank">👤<span class="rank-number">4</span></span>
+                <span class="name">You</span>
+                <span class="score">2756</span>
+                <span class="level-badge">Lvl 7</span>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Weekly Challenge</span>
+                        <span>3/5 completed</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Monthly Goal</span>
+                        <span>12/20 tasks</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Get More XP Section -->
+        <div class="xp-section">
+            <h3><span class="section-icon">⚡</span>GET MORE XP</h3>
+            <div class="xp-list">
+                <div class="xp-list-container">
+                    <div class="xp-item">
+                        <span class="xp-description">Book a round trip</span>
+                        <span class="xp-value">+300 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Choose policy-compliant flights</span>
+                        <span class="xp-value">+300 XP</span>
+                    </div>
+                    <div class="xp-item badge-unlock">
+                        <span class="xp-description">Reach leaderboard top</span>
+                        <span class="xp-value">Unlock badges</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Complete profile</span>
+                        <span class="xp-value">+100 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Refer a friend</span>
+                        <span class="xp-value">+250 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Book within budget</span>
+                        <span class="xp-value">+150 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Use mobile app</span>
+                        <span class="xp-value">+50 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Early check-in</span>
+                        <span class="xp-value">+75 XP</span>
+                    </div>
+                    <div class="xp-item streak-badge">
+                        <span class="xp-description">5 consecutive bookings</span>
+                        <span class="xp-value">Streak badge</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Review your trip</span>
+                        <span class="xp-value">+80 XP</span>
+                    </div>
+                    <!-- Duplicate items for seamless scrolling -->
+                    <div class="xp-item">
+                        <span class="xp-description">Book a round trip</span>
+                        <span class="xp-value">+300 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Choose policy-compliant flights</span>
+                        <span class="xp-value">+300 XP</span>
+                    </div>
+                    <div class="xp-item badge-unlock">
+                        <span class="xp-description">Reach leaderboard top</span>
+                        <span class="xp-value">Unlock badges</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Complete profile</span>
+                        <span class="xp-value">+100 XP</span>
+                    </div>
+                    <div class="xp-item">
+                        <span class="xp-description">Refer a friend</span>
+                        <span class="xp-value">+250 XP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const toggleLabel = document.querySelector('.toggle-label');
+
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.remove('light-theme');
+                toggleLabel.textContent = 'Dark Mode';
+            } else {
+                body.classList.add('light-theme');
+                toggleLabel.textContent = 'Light Mode';
+            }
+        });
+
+        // Enhanced XP Item interactions
+        const xpItems = document.querySelectorAll('.xp-item');
+        
+        xpItems.forEach((item, index) => {
+            item.addEventListener('click', function() {
+                // Create click burst effect
+                const burst = document.createElement('div');
+                burst.style.position = 'absolute';
+                burst.style.width = '100px';
+                burst.style.height = '100px';
+                burst.style.background = 'radial-gradient(circle, rgba(0,255,255,0.8) 0%, transparent 70%)';
+                burst.style.borderRadius = '50%';
+                burst.style.pointerEvents = 'none';
+                burst.style.left = '50%';
+                burst.style.top = '50%';
+                burst.style.transform = 'translate(-50%, -50%) scale(0)';
+                burst.style.animation = 'clickBurst 0.6s ease-out forwards';
+                
+                this.appendChild(burst);
+                
+                // Remove burst after animation
+                setTimeout(() => {
+                    if (burst.parentNode) {
+                        burst.parentNode.removeChild(burst);
+                    }
+                }, 600);
+            });
+        });
+
+        // Add click burst animation to CSS dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes clickBurst {
+                0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add random sparkle effects
+        setInterval(() => {
+            const xpSection = document.querySelector('.xp-section');
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'absolute';
+            sparkle.style.fontSize = Math.random() * 10 + 8 + 'px';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.animation = 'sparkle 2s ease-out forwards';
+            
+            xpSection.appendChild(sparkle);
+            
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.parentNode.removeChild(sparkle);
+                }
+            }, 2000);
+        }, 3000);
+
+        // Add sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkle {
+                0% { opacity: 1; transform: translateY(0) scale(1); }
+                100% { opacity: 0; transform: translateY(-20px) scale(1.5); }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
+    </script>
+</body>
+</html>
