@@ -96,59 +96,11 @@
                 </div>
             </div>
 
-            <!-- <div class="leaderboard-section">
-                <h3><span class="section-icon">👑</span>LEADERBOARD</h3>
-                <div class="leaderboard-item">
-                    <span class="rank">👤<span class="rank-number gold">1</span></span>
-                    <span class="name">Rachel</span>
-                    <span class="score">4298<span class="score-change">+42</span></span>
-                    <span class="level-badge">Lvl 12</span>
-                </div>
-                <div class="leaderboard-item">
-                    <span class="rank">👤<span class="rank-number silver">2</span></span>
-                    <span class="name">Henry</span>
-                    <span class="score">3078</span>
-                    <span class="level-badge">Lvl 9</span>
-                </div>
-                <div class="leaderboard-item">
-                    <span class="rank">👤<span class="rank-number bronze">3</span></span>
-                    <span class="name">Lucas</span>
-                    <span class="score">3008</span>
-                    <span class="level-badge">Lvl 8</span>
-                </div>
-                <div class="leaderboard-item">
-                    <span class="rank">👤<span class="rank-number">4</span></span>
-                    <span class="name">You</span>
-                    <span class="score">2756</span>
-                    <span class="level-badge">Lvl 7</span>
-                </div>
-
-                <div class="progress-section">
-                    <div class="progress-item">
-                        <div class="progress-label">
-                            <span>Weekly Challenge</span>
-                            <span>3/5 completed</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-label">
-                            <span>Monthly Goal</span>
-                            <span>12/20 tasks</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
-            
+
 
             <div class="booking-section">
                 <div class="travel-tabs">
@@ -158,19 +110,45 @@
                     <button class="tab-btn">🚗 Cars</button>
                 </div>
 
-                <div class="travelers-section step">
+                <div class="travelers-section ">
                     <label>Select Travelers</label>
                     <select class="travelers-select">
                         <option>1 Traveler</option>
                         <option>2 Travelers</option>
                         <option>3 Travelers</option>
-                        <option>4+ Travelers</option>
+                        <option>4 Travelers</option>
                     </select>
+                </div>
+
+                <!-- NEW: Fly Again Quick Routes Section -->
+                <div class="fly-again-section ">
+                    <div class="fly-again-label">
+                        <span class="fly-again-icon">✈️</span>
+                        <span>Fly Again</span>
+                    </div>
+                    <div class="quick-routes">
+                        <button class="route-pill" data-from="LON" data-to="DXB"
+                            data-tooltip="Quick fill: London to Dubai" onclick="fillRoute('LON', 'DXB')">
+                            LON <span class="route-arrow">→</span> DXB
+                        </button>
+                        <button class="route-pill" data-from="CCJ" data-to="COK"
+                            data-tooltip="Quick fill: Kozhikode to Kochi" onclick="fillRoute('CCJ', 'COK')">
+                            CCJ <span class="route-arrow">→</span> COK
+                        </button>
+                        <button class="route-pill" data-from="NYC" data-to="LAX"
+                            data-tooltip="Quick fill: New York to Los Angeles" onclick="fillRoute('NYC', 'LAX')">
+                            NYC <span class="route-arrow">→</span> LAX
+                        </button>
+                        <button class="route-pill" data-from="BOM" data-to="DEL"
+                            data-tooltip="Quick fill: Mumbai to Delhi" onclick="fillRoute('BOM', 'DEL')">
+                            BOM <span class="route-arrow">→</span> DEL
+                        </button>
+                    </div>
                 </div>
 
                 <div class="flight-search">
 
-                    <div class="trip-type step">
+                    <div class="trip-type ">
                         <label class="radio-option">
                             <input type="radio" name="tripType" value="roundtrip" checked>
                             <span class="radio-custom"></span>
@@ -184,7 +162,7 @@
                     </div>
                     <!-- <div class="xp">+10 XP</div> -->
 
-                    <div class="route-section step">
+                    <!-- <div class="route-section step">
                         <div class="route-input">
                             <label>From</label>
                             <input type="text" placeholder="NYC" class="route-field">
@@ -193,21 +171,32 @@
                             <label>To</label>
                             <input type="text" placeholder="LON" class="route-field">
                         </div>
+                    </div> -->
+
+                    <div class="route-section">
+                        <div class="route-input">
+                            <label>Departure</label>
+                            <input type="text" placeholder="NYC" class="route-field" id="fromField">
+                        </div>
+                        <div class="route-input">
+                            <label>Arrival</label>
+                            <input type="text" placeholder="LON" class="route-field" id="toField">
+                        </div>
                     </div>
 
-                    <div class="cities-section step">
+                    <!-- <div class="cities-section ">
                         <div class="city-input">
                             <label>Departure City</label>
-                            <input type="text" placeholder="Enter city" class="city-field">
+                            <input type="text" placeholder="Enter city" class="city-field route-field" id="fromField">
                         </div>
                         <div class="arrow">→</div>
                         <div class="city-input">
                             <label>Arrival City</label>
-                            <input type="text" placeholder="Enter city" class="city-field">
+                            <input type="text" placeholder="Enter city" class="city-field route-field" id="toField">
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="date-section step">
+                    <div class="date-section ">
                         <label>Date</label>
                         <input type="date" class="date-field" value="2024-01-15">
                     </div>
@@ -215,6 +204,7 @@
                     <button class="search-btn">🔍 Search Flights</button>
                 </div>
             </div>
+
         </main>
 
         <!-- Right Sidebar -->
@@ -266,7 +256,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <nav class="bottom-navigation" id="bottomNav">
