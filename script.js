@@ -971,3 +971,110 @@ window.addEventListener('bottomNavClick', (e) => {
     console.log('Bottom navigation clicked:', e.detail);
     // You can handle navigation logic here
 });
+
+
+// Quick route fill functionality
+function fillRoute(from, to) {
+    const fromField = document.getElementById('fromField');
+    const toField = document.getElementById('toField');
+    
+    // Add animation class
+    fromField.classList.add('auto-filled');
+    toField.classList.add('auto-filled');
+    
+    // Fill the fields
+    fromField.value = from;
+    toField.value = to;
+    
+    // Remove animation class after animation completes
+    setTimeout(() => {
+        fromField.classList.remove('auto-filled');
+        toField.classList.remove('auto-filled');
+    }, 800);
+    
+    // Optional: Focus on the date field after auto-fill
+    setTimeout(() => {
+        const dateField = document.querySelector('.date-field');
+        if (dateField) {
+            dateField.focus();
+        }
+    }, 900);
+}
+
+// Add ripple effect to route pills
+function initializeRouteRippleEffect() {
+    document.querySelectorAll('.route-pill').forEach(pill => {
+        pill.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                background-color: rgba(255, 255, 255, 0.7);
+                left: ${x}px;
+                top: ${y}px;
+                width: ${size}px;
+                height: ${size}px;
+            `;
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+}
+
+// Initialize the functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeRouteRippleEffect();
+});
+
+// Alternative function to add new route pills dynamically
+function addRoutePill(from, to, tooltip, container) {
+    const routePill = document.createElement('button');
+    routePill.className = 'route-pill';
+    routePill.setAttribute('data-from', from);
+    routePill.setAttribute('data-to', to);
+    routePill.setAttribute('data-tooltip', tooltip);
+    routePill.onclick = () => fillRoute(from, to);
+    
+    routePill.innerHTML = `${from} <span class="route-arrow">→</span> ${to}`;
+    
+    container.appendChild(routePill);
+    
+    // Add ripple effect to the new pill
+    routePill.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            background-color: rgba(255, 255, 255, 0.7);
+            left: ${x}px;
+            top: ${y}px;
+            width: ${size}px;
+            height: ${size}px;
+        `;
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    });
+}
+
